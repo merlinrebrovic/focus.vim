@@ -1,0 +1,3 @@
+Prototyping an idea ...
+
+    nnoremap key :call ToggleFocusMode(80)<Cr>
