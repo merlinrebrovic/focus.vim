@@ -1,3 +1,12 @@
+" Create a new window on the left side of the current one and
+" return the cursor back to it.
+function! CreateSideWindow(width)
+    vnew
+    exe "vert resize ".a:width
+    " jump back (to the right window)
+    exe "normal \<C-w>l"
+endfunc
+
 """ FocusMode
 function! ToggleFocusMode(...)
   " if (&foldcolumn != 12)
@@ -21,10 +30,7 @@ function! ToggleFocusMode(...)
     let l:text_width = 80
     " -10 is for left size vertical line, numbers and foldcolumn
     let l:left_margin = (l:max_width - l:text_width) / 2
-    vnew
-    exe "vert resize ".l:left_margin
-    " set foldcolumn=0
-    exe "normal \<C-w>l"
+    call CreateSideWindow(l:left_margin)
   else
     " restore original fill characters
     exec "set fillchars=".escape(t:focus_fillchars, "|")
