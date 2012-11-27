@@ -45,22 +45,22 @@ endfunc
 
 """ FocusMode
 function! ToggleFocusMode(...)
-  if !exists("t:focusmode")
-    mksession!
-    only
-    let t:focusmode = 1
+    if !exists("t:focusmode")
+        mksession!
+        only
+        let t:focusmode = 1
 
-    call HideChrome()
+        call HideChrome()
 
-    let l:max_width = winwidth(0)
-    let l:text_width = 80
-    let l:left_margin = (l:max_width - l:text_width) / 2
-    call CreateSideWindow(l:left_margin)
-  else
-    call ShowChrome()
-    " restore original session
-    so Session.vim
-    unlet t:focusmode
-    exec delete("Session.vim")
-  endif
+        let l:max_width = winwidth(0)
+        let l:text_width = 80
+        let l:left_margin = (l:max_width - l:text_width) / 2
+        call CreateSideWindow(l:left_margin)
+    else
+        call ShowChrome()
+        " restore original session
+        so Session.vim
+        exec delete("Session.vim")
+        unlet t:focusmode
+    endif
 endfunc
