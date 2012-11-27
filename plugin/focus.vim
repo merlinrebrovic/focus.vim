@@ -2,6 +2,7 @@
 " return the cursor back to it.
 function! CreateSideWindow(width)
     vnew
+    setlocal nonumber
     exe "vert resize ".a:width
     " jump back (to the right window)
     exe "normal \<C-w>l"
