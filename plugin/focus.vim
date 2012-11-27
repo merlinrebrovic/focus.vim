@@ -47,7 +47,7 @@ endfunc
 function! ToggleFocusMode(...)
     if !exists("t:focusmode")
         mksession!
-        only
+        only!
         let t:focusmode = 1
 
         call HideChrome()
