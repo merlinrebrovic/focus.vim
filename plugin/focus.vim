@@ -14,9 +14,20 @@ function! HideChrome()
     set fillchars+=vert:\ 
 
     " remove color from vertical and horizontal bars
-    highlight VertSplit ctermbg=NONE guibg=NONE
-    highlight StatusLine ctermbg=NONE guibg=NONE
-    highlight StatusLineNC ctermbg=NONE guibg=NONE
+    if has("gui_running")
+        let l:guibg = synIDattr(synIDtrans(hlID("Normal")), "bg", "gui")
+        if l:guibg != ""
+            exec "highlight VertSplit guifg=".l:guibg." guibg=".l:guibg
+        endif
+    else
+        " TODO: terminal mode coloring doesn't cover all situations
+        let l:ctermbg = synIDattr(synIDtrans(hlID("Normal")), "bg", "cterm")
+        if l:ctermbg != -1
+            exec "highlight VertSplit ctermbg=".l:ctermbg." ctermfg=".l:ctermbg
+        else
+            highlight VertSplit ctermbg=NONE
+        endif
+    endif
 endfunc
 
 function! ShowChrome()
