@@ -1,10 +1,10 @@
 """ FocusMode
 function! ToggleFocusMode(...)
   " if (&foldcolumn != 12)
-  if !exists("w:focusmode")
+  if !exists("t:focusmode")
     mksession!
     only
-    let w:focusmode = 1
+    let t:focusmode = 1
     " set laststatus=0
     " set noruler
     " set nonu
@@ -14,7 +14,7 @@ function! ToggleFocusMode(...)
     " hi LineNr ctermfg=0 ctermbg=none
     " hi NonText ctermfg=0
     " hi VertSplit ctermfg=0 ctermbg=none
-    let w:focus_fillchars = &fillchars
+    let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
 
     let l:max_width = winwidth(0)
@@ -27,12 +27,12 @@ function! ToggleFocusMode(...)
     exe "normal \<C-w>l"
   else
     " restore original fill characters
-    exec "set fillchars=".escape(w:focus_fillchars, "|")
-    unlet w:focus_fillchars
+    exec "set fillchars=".escape(t:focus_fillchars, "|")
+    unlet t:focus_fillchars
 
     " restore original session
     so Session.vim
-    unlet w:focusmode
+    unlet t:focusmode
     exec delete("Session.vim")
   endif
 endfunc
