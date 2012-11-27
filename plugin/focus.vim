@@ -9,26 +9,16 @@ endfunc
 
 """ FocusMode
 function! ToggleFocusMode(...)
-  " if (&foldcolumn != 12)
   if !exists("t:focusmode")
     mksession!
     only
     let t:focusmode = 1
-    " set laststatus=0
-    " set noruler
-    " set nonu
 
-    " styling
-    " hi FoldColumn ctermbg=none
-    " hi LineNr ctermfg=0 ctermbg=none
-    " hi NonText ctermfg=0
-    " hi VertSplit ctermfg=0 ctermbg=none
     let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
 
     let l:max_width = winwidth(0)
     let l:text_width = 80
-    " -10 is for left size vertical line, numbers and foldcolumn
     let l:left_margin = (l:max_width - l:text_width) / 2
     call CreateSideWindow(l:left_margin)
   else
