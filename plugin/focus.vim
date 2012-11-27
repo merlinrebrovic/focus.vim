@@ -17,6 +17,10 @@ function! ToggleFocusMode(...)
     " save previous state and insert empty space as a fill char
     let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
+    " remove color from vertical and horizontal bars
+    highlight VertSplit ctermbg=NONE guibg=NONE
+    highlight StatusLine ctermbg=NONE guibg=NONE
+    highlight StatusLineNC ctermbg=NONE guibg=NONE
 
     let l:max_width = winwidth(0)
     let l:text_width = 80
@@ -31,5 +35,8 @@ function! ToggleFocusMode(...)
     so Session.vim
     unlet t:focusmode
     exec delete("Session.vim")
+
+    " restore all tampering with colors
+    exec "colorscheme ".g:colors_name
   endif
 endfunc
