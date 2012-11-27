@@ -14,7 +14,8 @@ function! ToggleFocusMode(...)
     " hi LineNr ctermfg=0 ctermbg=none
     " hi NonText ctermfg=0
     " hi VertSplit ctermfg=0 ctermbg=none
-    " set fillchars+=vert:\ 
+    let w:focus_fillchars = &fillchars
+    set fillchars+=vert:\ 
 
     let l:max_width = winwidth(0)
     let l:text_width = 80
@@ -25,6 +26,11 @@ function! ToggleFocusMode(...)
     " set foldcolumn=0
     exe "normal \<C-w>l"
   else
+    " restore original fill characters
+    exec "set fillchars=".escape(w:focus_fillchars, "|")
+    unlet w:focus_fillchars
+
+    " restore original session
     so Session.vim
     unlet w:focusmode
     exec delete("Session.vim")
