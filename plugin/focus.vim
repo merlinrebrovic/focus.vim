@@ -14,6 +14,7 @@ function! ToggleFocusMode(...)
     only
     let t:focusmode = 1
 
+    " save previous state and insert empty space as a fill char
     let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
 
