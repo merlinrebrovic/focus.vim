@@ -24,7 +24,11 @@ function! ShowChrome()
     exec "set fillchars=".escape(t:focus_fillchars, "|")
 
     " restore all tampering with colors
-    exec "colorscheme ".g:colors_name
+    if exists("g:colors_name")
+        exec "colorscheme ".g:colors_name
+    else
+        exec "colorscheme default"
+    endif
     unlet t:focus_fillchars
 endfunc
 
