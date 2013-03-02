@@ -1,3 +1,3 @@
 Prototyping an idea ...
 
-    nnoremap key :call ToggleFocusMode()<Cr>
+    nmap key <Plug>FocusmodeToggle
