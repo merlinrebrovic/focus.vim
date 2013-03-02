@@ -1,6 +1,20 @@
+" Vim plugin for focusing on a single buffer
+" Copyright (c) 2012 Merlin Rebrovic
+" License: This plugin is released under the MIT License
+
+" Double loading guard
+if exists("g:loaded_focusmode")
+  finish
+endif
+let g:loaded_focusmode = 1
+
+" Guard against users using 'compatible'
+let s:save_cpo = &cpo
+set cpo&vim
+
 " Create a new window on the left side of the current one and
 " return the cursor back to it.
-function! CreateSideWindow(width)
+function s:CreateSideWindow(width)
     vnew
     setlocal nonumber
     exe "vert resize ".a:width
@@ -8,7 +22,7 @@ function! CreateSideWindow(width)
     exe "normal \<C-w>l"
 endfunc
 
-function! HideChrome()
+function s:HideChrome()
     " save previous state and insert empty space as a fill char
     let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
@@ -30,7 +44,7 @@ function! HideChrome()
     endif
 endfunc
 
-function! ShowChrome()
+function s:ShowChrome()
     " restore original fill characters
     exec "set fillchars=".escape(t:focus_fillchars, "|")
 
@@ -44,23 +58,33 @@ function! ShowChrome()
 endfunc
 
 """ FocusMode
-function! ToggleFocusMode(...)
+function s:ToggleFocusMode(...)
     if !exists("t:focusmode")
         mksession!
         only!
         let t:focusmode = 1
 
-        call HideChrome()
+        call s:HideChrome()
 
         let l:max_width = winwidth(0)
         let l:text_width = 80
         let l:left_margin = (l:max_width - l:text_width) / 2
-        call CreateSideWindow(l:left_margin)
+        call s:CreateSideWindow(l:left_margin)
     else
-        call ShowChrome()
+        call s:ShowChrome()
         " restore original session
         so Session.vim
         exec delete("Session.vim")
         unlet t:focusmode
     endif
 endfunc
+
+" Default mapping if no mapping exists
+if !hasmapto('<Plug>FocusmodeToggle')
+  map <unique> <Leader>fmt <Plug>FocusmodeToggle
+endif
+noremap <unique> <script> <Plug>FocusmodeToggle <SID>ToggleFocusMode
+noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
+
+" Resetting the 'compatible' guard
+let &cpo = s:save_cpo
