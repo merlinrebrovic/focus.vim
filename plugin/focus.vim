@@ -73,7 +73,7 @@ function s:ToggleFocusMode(...)
     else
         call s:ShowChrome()
         " restore original session
-        so Session.vim
+        silent! so Session.vim
         exec delete("Session.vim")
         unlet t:focusmode
     endif
