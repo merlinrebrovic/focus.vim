@@ -57,24 +57,32 @@ function s:ShowChrome()
     unlet t:focus_fillchars
 endfunc
 
+""" Turn on focus mode
+function s:EnterFocusMode()
+    mksession!
+    only!
+
+    call s:HideChrome()
+    let l:max_width = winwidth(0)
+    let l:text_width = 80
+    let l:left_margin = (l:max_width - l:text_width) / 2
+    call s:CreateSideWindow(l:left_margin)
+endfunc
+
+""" Turn off focus mode
+function s:ExitFocusMode()
+    call s:ShowChrome()
+    silent! so Session.vim
+    exec delete("Session.vim")
+endfunc
+
 """ FocusMode
 function s:ToggleFocusMode(...)
     if !exists("t:focusmode")
-        mksession!
-        only!
         let t:focusmode = 1
-
-        call s:HideChrome()
-
-        let l:max_width = winwidth(0)
-        let l:text_width = 80
-        let l:left_margin = (l:max_width - l:text_width) / 2
-        call s:CreateSideWindow(l:left_margin)
+        call s:EnterFocusMode()
     else
-        call s:ShowChrome()
-        " restore original session
-        silent! so Session.vim
-        exec delete("Session.vim")
+        call s:ExitFocusMode()
         unlet t:focusmode
     endif
 endfunc
