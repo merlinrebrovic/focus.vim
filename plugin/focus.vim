@@ -73,7 +73,7 @@ endfunc
 function s:ExitFocusMode()
     call s:ShowChrome()
     silent! so Session.vim
-    exec delete("Session.vim")
+    exec delete(v:this_session)
 endfunc
 
 """ FocusMode
