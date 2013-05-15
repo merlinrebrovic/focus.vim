@@ -59,7 +59,11 @@ endfunc
 
 """ Turn on focus mode
 function s:EnterFocusMode()
+    let t:saved_sessionoptions = &sessionoptions
+    exec "set sessionoptions=blank,buffers,folds,help,tabpages,winsize"
     mksession!
+    exec "set sessionoptions=".t:saved_sessionoptions
+    tabonly!
     only!
 
     call s:HideChrome()
