@@ -3,7 +3,7 @@
 " License: This plugin is released under the MIT License
 
 " Double loading guard
-if exists("g:loaded_focusmode")
+if exists("g:loaded_focusmode") && !exists("g:focusmode_debug")
   finish
 endif
 let g:loaded_focusmode = 1
@@ -14,7 +14,7 @@ set cpo&vim
 
 " Create a new window on the left side of the current one and
 " return the cursor back to it.
-function s:CreateSideWindow(width)
+function! s:CreateSideWindow(width)
     vnew
     setlocal nonumber
     exe "vert resize ".a:width
@@ -22,7 +22,7 @@ function s:CreateSideWindow(width)
     exe "normal \<C-w>l"
 endfunc
 
-function s:HideChrome()
+function! s:HideChrome()
     " save previous state and insert empty space as a fill char
     let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
@@ -44,7 +44,7 @@ function s:HideChrome()
     endif
 endfunc
 
-function s:ShowChrome()
+function! s:ShowChrome()
     " restore original fill characters
     exec "set fillchars=".escape(t:focus_fillchars, "|")
 
@@ -58,11 +58,12 @@ function s:ShowChrome()
 endfunc
 
 """ Turn on focus mode
-function s:EnterFocusMode()
-    let t:saved_sessionoptions = &sessionoptions
+function! s:EnterFocusMode()
+    let l:saved_sessionoptions = &sessionoptions
     exec "set sessionoptions=blank,buffers,folds,help,tabpages,winsize"
-    mksession!
-    exec "set sessionoptions=".t:saved_sessionoptions
+    let t:temp_file = tempname().'.vim'
+    exec "mksession! ".t:temp_file
+    exec "set sessionoptions=".l:saved_sessionoptions
     tabonly!
     only!
 
@@ -74,14 +75,14 @@ function s:EnterFocusMode()
 endfunc
 
 """ Turn off focus mode
-function s:ExitFocusMode()
+function! s:ExitFocusMode()
     call s:ShowChrome()
-    silent! so Session.vim
+    silent! so t:temp_file
     exec delete(v:this_session)
 endfunc
 
 """ FocusMode
-function s:ToggleFocusMode(...)
+function! s:ToggleFocusMode(...)
     if !exists("t:focusmode")
         let t:focusmode = 1
         call s:EnterFocusMode()
@@ -93,10 +94,10 @@ endfunc
 
 " Default mapping if no mapping exists
 if !hasmapto('<Plug>FocusmodeToggle')
-  map <unique> <Leader>fmt <Plug>FocusmodeToggle
+    map <unique> <Leader>fmt <Plug>FocusmodeToggle
+    noremap <unique> <script> <Plug>FocusmodeToggle <SID>ToggleFocusMode
+    noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
 endif
-noremap <unique> <script> <Plug>FocusmodeToggle <SID>ToggleFocusMode
-noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
 
 " Resetting the 'compatible' guard
 let &cpo = s:save_cpo
