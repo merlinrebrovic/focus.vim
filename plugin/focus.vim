@@ -61,8 +61,8 @@ endfunc
 function! s:EnterFocusMode()
     let l:saved_sessionoptions = &sessionoptions
     exec "set sessionoptions=blank,buffers,folds,help,tabpages,winsize"
-    let t:temp_file = tempname().'.vim'
-    exec "mksession! ".t:temp_file
+    let s:temp_file = tempname().'.vim'
+    exec "mksession! ".s:temp_file
     exec "set sessionoptions=".l:saved_sessionoptions
     tabonly!
     only!
@@ -78,7 +78,7 @@ endfunc
 function! s:ExitFocusMode()
     let l:cursor_position = getpos('.')
     call s:ShowChrome()
-    silent! so t:temp_file
+    exec "silent! so ".s:temp_file
     exec delete(v:this_session)
     call setpos('.', l:cursor_position)
 endfunc
