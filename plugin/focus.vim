@@ -76,9 +76,11 @@ endfunc
 
 """ Turn off focus mode
 function! s:ExitFocusMode()
+    let l:cursor_position = getpos('.')
     call s:ShowChrome()
     silent! so t:temp_file
     exec delete(v:this_session)
+    call setpos('.', l:cursor_position)
 endfunc
 
 """ FocusMode
