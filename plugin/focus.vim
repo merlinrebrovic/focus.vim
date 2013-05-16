@@ -72,10 +72,17 @@ function! s:EnterFocusMode()
     let l:text_width = 80
     let l:left_margin = (l:max_width - l:text_width) / 2
     call s:CreateSideWindow(l:left_margin)
+    augroup focusModeAutoQuit
+        autocmd!
+        autocmd BufUnload <buffer> qall!
+    augroup END
 endfunc
 
 """ Turn off focus mode
 function! s:ExitFocusMode()
+    augroup focusModeAutoQuit
+        autocmd!
+    augroup END
     let l:cursor_position = getpos('.')
     call s:ShowChrome()
     exec "silent! so ".s:temp_file
@@ -97,9 +104,9 @@ endfunc
 " Default mapping if no mapping exists
 if !hasmapto('<Plug>FocusmodeToggle')
     map <unique> <Leader>fmt <Plug>FocusmodeToggle
-    noremap <unique> <script> <Plug>FocusmodeToggle <SID>ToggleFocusMode
-    noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
 endif
+noremap <unique> <script> <Plug>FocusmodeToggle <SID>ToggleFocusMode
+noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
 
 " Resetting the 'compatible' guard
 let &cpo = s:save_cpo
