@@ -3,7 +3,7 @@
 " License: This plugin is released under the MIT License
 
 " Double loading guard
-if exists("g:loaded_focusmode")
+if exists("g:loaded_focusmode") && !exists("g:focusmode_debug")
   finish
 endif
 let g:loaded_focusmode = 1
@@ -14,7 +14,7 @@ set cpo&vim
 
 " Create a new window on the left side of the current one and
 " return the cursor back to it.
-function s:CreateSideWindow(width)
+function! s:CreateSideWindow(width)
     vnew
     setlocal nonumber
     exe "vert resize ".a:width
@@ -22,7 +22,7 @@ function s:CreateSideWindow(width)
     exe "normal \<C-w>l"
 endfunc
 
-function s:HideChrome()
+function! s:HideChrome()
     " save previous state and insert empty space as a fill char
     let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
@@ -44,7 +44,7 @@ function s:HideChrome()
     endif
 endfunc
 
-function s:ShowChrome()
+function! s:ShowChrome()
     " restore original fill characters
     exec "set fillchars=".escape(t:focus_fillchars, "|")
 
@@ -57,31 +57,53 @@ function s:ShowChrome()
     unlet t:focus_fillchars
 endfunc
 
+""" Turn on focus mode
+function! s:EnterFocusMode()
+    let l:saved_sessionoptions = &sessionoptions
+    exec "set sessionoptions=blank,buffers,folds,help,tabpages,winsize"
+    let s:temp_file = tempname().'.vim'
+    exec "mksession! ".s:temp_file
+    exec "set sessionoptions=".l:saved_sessionoptions
+    silent! tabonly!
+    silent! only!
+
+    call s:HideChrome()
+    let l:max_width = winwidth(0)
+    let l:text_width = 80
+    let l:left_margin = (l:max_width - l:text_width) / 2
+    call s:CreateSideWindow(l:left_margin)
+    augroup focusModeAutoQuit
+        autocmd!
+        autocmd BufUnload <buffer> qall!
+    augroup END
+endfunc
+
+""" Turn off focus mode
+function! s:ExitFocusMode()
+    augroup focusModeAutoQuit
+        autocmd!
+    augroup END
+    let l:cursor_position = getpos('.')
+    call s:ShowChrome()
+    exec "silent! so ".s:temp_file
+    exec delete(v:this_session)
+    call setpos('.', l:cursor_position)
+endfunc
+
 """ FocusMode
-function s:ToggleFocusMode(...)
+function! s:ToggleFocusMode(...)
     if !exists("t:focusmode")
-        mksession!
-        only!
         let t:focusmode = 1
-
-        call s:HideChrome()
-
-        let l:max_width = winwidth(0)
-        let l:text_width = 80
-        let l:left_margin = (l:max_width - l:text_width) / 2
-        call s:CreateSideWindow(l:left_margin)
+        call s:EnterFocusMode()
     else
-        call s:ShowChrome()
-        " restore original session
-        silent! so Session.vim
-        exec delete("Session.vim")
+        call s:ExitFocusMode()
         unlet t:focusmode
     endif
 endfunc
 
 " Default mapping if no mapping exists
 if !hasmapto('<Plug>FocusmodeToggle')
-  map <unique> <Leader>fmt <Plug>FocusmodeToggle
+    map <unique> <Leader>fmt <Plug>FocusmodeToggle
 endif
 noremap <unique> <script> <Plug>FocusmodeToggle <SID>ToggleFocusMode
 noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
