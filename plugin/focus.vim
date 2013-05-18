@@ -64,8 +64,8 @@ function! s:EnterFocusMode()
     let s:temp_file = tempname().'.vim'
     exec "mksession! ".s:temp_file
     exec "set sessionoptions=".l:saved_sessionoptions
-    tabonly!
-    only!
+    silent! tabonly!
+    silent! only!
 
     call s:HideChrome()
     let l:max_width = winwidth(0)
