@@ -29,14 +29,15 @@ function! s:HideChrome()
 
     " remove color from vertical and horizontal bars
     if has("gui_running")
+        highlight VertSplit gui=none,bold
         let l:guibg = synIDattr(synIDtrans(hlID("Normal")), "bg", "gui")
         if l:guibg != ""
             exec "highlight VertSplit guifg=".l:guibg." guibg=".l:guibg
         endif
     else
-        " TODO: terminal mode coloring doesn't cover all situations
+        highlight VertSplit cterm=none,bold
         let l:ctermbg = synIDattr(synIDtrans(hlID("Normal")), "bg", "cterm")
-        if l:ctermbg != -1
+        if l:ctermbg != -1 && l:ctermbg != ""
             exec "highlight VertSplit ctermbg=".l:ctermbg." ctermfg=".l:ctermbg
         else
             highlight VertSplit ctermbg=NONE
