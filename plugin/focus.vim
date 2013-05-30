@@ -13,11 +13,11 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! s:HideChrome()
-    " save previous state and insert empty space as a fill char
+    " Save previous state and insert empty space as a fill char
     let t:focus_fillchars = &fillchars
     set fillchars+=vert:\ 
 
-    " remove color from vertical and horizontal bars
+    " Remove color from vertical and horizontal bars
     if has("gui_running")
         highlight VertSplit gui=none,bold
         let l:guibg = synIDattr(synIDtrans(hlID("Normal")), "bg", "gui")
@@ -36,10 +36,10 @@ function! s:HideChrome()
 endfunc
 
 function! s:ShowChrome()
-    " restore original fill characters
+    " Restore original fill characters
     exec "set fillchars=".escape(t:focus_fillchars, "|")
 
-    " restore all tampering with colors
+    " Restore all tampering with colors
     if exists("g:colors_name")
         exec "colorscheme ".g:colors_name
     else
@@ -48,6 +48,7 @@ function! s:ShowChrome()
     unlet t:focus_fillchars
 endfunc
 
+" Get the right text width from a different array of options.
 function! s:GetTextWidth()
     let l:text_width = 80 " default value if nothing is set
     if &textwidth
@@ -64,15 +65,18 @@ function! s:CreateSideWindow(width)
     vnew
     setlocal nonumber
     exe "vert resize ".a:width
-    " jump back (to the right window)
+    " Jump back to the window on the right
     exe "normal \<C-w>l"
 endfunc
 
+" Center text on the screen
 function! s:CenterText()
     let l:max_width = winwidth(0)
     let l:text_width = s:GetTextWidth()
     let l:left_margin = (l:max_width - l:text_width) / 2
-    if &number " don't let the line numbers push the content too much
+
+    " Don't let the line numbers push the content too much
+    if &number
         let l:left_margin = l:left_margin - &numberwidth
     endif
     if l:left_margin > 0
@@ -80,6 +84,7 @@ function! s:CenterText()
     endif
 endfunc
 
+" Save current session to a temporary file
 function! s:SaveCurrentSession()
     let l:saved_sessionoptions = &sessionoptions
     exec "set sessionoptions=blank,buffers,folds,help,tabpages,winsize"
@@ -88,7 +93,7 @@ function! s:SaveCurrentSession()
     exec "set sessionoptions=".l:saved_sessionoptions
 endfunc
 
-""" Turn on focus mode
+" Turn on focus mode
 function! s:EnterFocusMode()
     call s:SaveCurrentSession()
     silent! tabonly!
@@ -102,7 +107,7 @@ function! s:EnterFocusMode()
     augroup END
 endfunc
 
-""" Turn off focus mode
+" Turn off focus mode
 function! s:ExitFocusMode()
     augroup focusModeAutoQuit
         autocmd!
@@ -114,7 +119,7 @@ function! s:ExitFocusMode()
     call setpos('.', l:cursor_position)
 endfunc
 
-""" FocusMode
+" FocusMode
 function! s:ToggleFocusMode(...)
     if !exists("t:focusmode")
         let t:focusmode = 1
