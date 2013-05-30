@@ -58,6 +58,14 @@ function! s:ShowChrome()
     unlet t:focus_fillchars
 endfunc
 
+function! s:GetTextWidth()
+    let l:text_width = 80 " default value if nothing is set
+    if &textwidth
+        let l:text_width = &textwidth
+    endif
+    return l:text_width
+endfunc
+
 """ Turn on focus mode
 function! s:EnterFocusMode()
     let l:saved_sessionoptions = &sessionoptions
@@ -70,7 +78,7 @@ function! s:EnterFocusMode()
 
     call s:HideChrome()
     let l:max_width = winwidth(0)
-    let l:text_width = 80
+    let l:text_width = s:GetTextWidth()
     let l:left_margin = (l:max_width - l:text_width) / 2
     call s:CreateSideWindow(l:left_margin)
     augroup focusModeAutoQuit
