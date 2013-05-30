@@ -82,7 +82,12 @@ function! s:EnterFocusMode()
     let l:max_width = winwidth(0)
     let l:text_width = s:GetTextWidth()
     let l:left_margin = (l:max_width - l:text_width) / 2
-    call s:CreateSideWindow(l:left_margin)
+    if &number " don't let the line numbers push the content too much
+        let l:left_margin = l:left_margin - &numberwidth
+    endif
+    if l:left_margin > 0
+        call s:CreateSideWindow(l:left_margin)
+    endif
     augroup focusModeAutoQuit
         autocmd!
         autocmd BufUnload <buffer> qall!
