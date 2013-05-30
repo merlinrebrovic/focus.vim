@@ -12,16 +12,6 @@ let g:loaded_focusmode = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-" Create a new window on the left side of the current one and
-" return the cursor back to it.
-function! s:CreateSideWindow(width)
-    vnew
-    setlocal nonumber
-    exe "vert resize ".a:width
-    " jump back (to the right window)
-    exe "normal \<C-w>l"
-endfunc
-
 function! s:HideChrome()
     " save previous state and insert empty space as a fill char
     let t:focus_fillchars = &fillchars
@@ -68,17 +58,17 @@ function! s:GetTextWidth()
     return l:text_width
 endfunc
 
-""" Turn on focus mode
-function! s:EnterFocusMode()
-    let l:saved_sessionoptions = &sessionoptions
-    exec "set sessionoptions=blank,buffers,folds,help,tabpages,winsize"
-    let s:temp_file = tempname().'.vim'
-    exec "mksession! ".s:temp_file
-    exec "set sessionoptions=".l:saved_sessionoptions
-    silent! tabonly!
-    silent! only!
+" Create a new window on the left side of the current one and
+" return the cursor back to it.
+function! s:CreateSideWindow(width)
+    vnew
+    setlocal nonumber
+    exe "vert resize ".a:width
+    " jump back (to the right window)
+    exe "normal \<C-w>l"
+endfunc
 
-    call s:HideChrome()
+function! s:CenterText()
     let l:max_width = winwidth(0)
     let l:text_width = s:GetTextWidth()
     let l:left_margin = (l:max_width - l:text_width) / 2
@@ -88,6 +78,24 @@ function! s:EnterFocusMode()
     if l:left_margin > 0
         call s:CreateSideWindow(l:left_margin)
     endif
+endfunc
+
+function! s:SaveCurrentSession()
+    let l:saved_sessionoptions = &sessionoptions
+    exec "set sessionoptions=blank,buffers,folds,help,tabpages,winsize"
+    let s:temp_file = tempname().'.vim'
+    exec "mksession! ".s:temp_file
+    exec "set sessionoptions=".l:saved_sessionoptions
+endfunc
+
+""" Turn on focus mode
+function! s:EnterFocusMode()
+    call s:SaveCurrentSession()
+    silent! tabonly!
+    silent! only!
+
+    call s:HideChrome()
+    call s:CenterText()
     augroup focusModeAutoQuit
         autocmd!
         autocmd BufUnload <buffer> qall!
