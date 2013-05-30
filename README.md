@@ -1,3 +1,3 @@
 Prototyping an idea ...
 
-    nmap key <Plug>FocusmodeToggle
+    nmap key <Plug>FocusModeToggle

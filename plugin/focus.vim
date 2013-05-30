@@ -127,9 +127,9 @@ endfunc
 
 " Default mapping if no mapping exists
 if !hasmapto('<Plug>FocusmodeToggle')
-    map <unique> <Leader>fmt <Plug>FocusmodeToggle
+    map <unique> <Leader>fmt <Plug>FocusModeToggle
 endif
-noremap <unique> <script> <Plug>FocusmodeToggle <SID>ToggleFocusMode
+noremap <unique> <script> <Plug>FocusModeToggle <SID>ToggleFocusMode
 noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
 
 " Resetting the 'compatible' guard
