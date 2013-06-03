@@ -53,8 +53,8 @@ function! s:GetTextWidth()
     let l:text_width = 80 " default value if nothing is set
     if &textwidth
         let l:text_width = &textwidth
-    elseif exists("g:focuswidth")
-        let l:text_width = g:focuswidth
+    elseif exists("g:focusmode_width")
+        let l:text_width = g:focusmode_width
     endif
     return l:text_width
 endfunc
