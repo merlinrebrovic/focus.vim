@@ -1,5 +1,6 @@
-focusmode.vim
-=============
+Focus.vim
+=========
+
 Focus mode is a state where you are focusing on one thing and one thing only.
 This is what this plugin does for you.
 
@@ -11,19 +12,27 @@ will be restored for you along with their corresponding windows.
 
 Requirements
 ============
-No requirements (except Vim :)). This is a stand-alone plugin with no outside
-dependencies.
+
+No requirements (except Vim of course). This is a stand-alone plugin with no
+outside dependencies.
 
 Installation
 ============
-The preferred way is to install the [vundle][] plugin manager and then add the
-following line to your `.vimrc`:
 
-    Bundle "merlinrebrovic/focus.vim"
+1. [Vundle][]  
+   Add the following line to your `.vimrc`:
 
-After this just source your `.vimrc` and run `:BundleInstall` inside Vim.
+        Bundle "merlinrebrovic/focus.vim"
 
-Alternatively you can install using [pathogen][] or go the manual route.
+   After this just source your `.vimrc` and run `:BundleInstall` inside Vim.
+
+2. [Pathogen][]  
+   Copy or clone this repository to `.vim/bundle` folder
+   (`vimfiles\bundle` on Windows).
+
+3. Manually  
+   Copy `focus.vim` script to `.vim/plugin` folder (`vimfiles\plugin` on
+   Windows).
 
 Configuration
 =============
@@ -40,17 +49,23 @@ global namespace as much as possible.
 You can set the desired width of the focused buffer while in focus mode. There
 are several ways to do this in order of priority:
 
-- Set the desired width in `g:focusmode_width` at any time before entering the
-  focus mode.
-- If the `textwidth` Vim option is set it will be used.
-- If the previous values were not set the default value (80) is used.
+1. If the `textwidth` Vim option is set, it will be used.
+
+2. If it's not set, you can set `g:focusmode_width` variable at any time before
+   entering the focus mode and Focus.vim will use that. If used regularly,
+   put it in your `.vimrc` file. For example:
+
+        let g:focusmode_width = 72
+
+3. If the previous values were not set, the default value (80) is used.
 
 License
 =======
 
-Copyright (c) Merlin Rebrovic. Distributed under the [MIT license][].
+Copyright (c) Merlin Rebrović. Distributed under the [MIT license][].
 
+Written by Merlin Rebrović and Zoran Meliš.
 
-[vundle]: https://github.com/gmarik/vundle
-[pathogen]: https://github.com/tpope/vim-pathogen
+[Vundle]: https://github.com/gmarik/vundle
+[Pathogen]: https://github.com/tpope/vim-pathogen
 [MIT license]: http://opensource.org/licenses/MIT
