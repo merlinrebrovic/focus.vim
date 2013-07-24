@@ -67,6 +67,7 @@ function! s:CreateSideWindow(width)
     vnew
     let &splitright = l:sr
     setlocal nonumber
+    setlocal statusline=%(%)
     exe "vert resize ".a:width
     " Jump back to the window on the right
     exe "normal \<C-w>l"
