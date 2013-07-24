@@ -62,7 +62,10 @@ endfunc
 " Create a new window on the left side of the current one and
 " return the cursor back to it.
 function! s:CreateSideWindow(width)
+    let l:sr = &splitright
+    set nosplitright
     vnew
+    let &splitright = l:sr
     setlocal nonumber
     exe "vert resize ".a:width
     " Jump back to the window on the right
