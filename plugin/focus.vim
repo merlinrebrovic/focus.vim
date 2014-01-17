@@ -134,8 +134,11 @@ function! s:ToggleFocusMode(...)
     endif
 endfunc
 
-" Default mapping if no mapping exists
-if !hasmapto('<Plug>FocusmodeToggle')
+if !exists('g:focus_use_default_mapping')
+    let g:focus_use_default_mapping = 1
+endif
+
+if g:focus_use_default_mapping == 1
     map <unique> <Leader>fmt <Plug>FocusModeToggle
 endif
 noremap <unique> <script> <Plug>FocusModeToggle <SID>ToggleFocusMode
