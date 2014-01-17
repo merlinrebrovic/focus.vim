@@ -138,6 +138,11 @@ if !exists('g:focus_use_default_mapping')
     let g:focus_use_default_mapping = 1
 endif
 
+" For backwards compatibility
+if hasmapto('<Plug>FocusModeToggle')
+    let g:focus_use_default_mapping = 0
+endif
+
 if g:focus_use_default_mapping == 1
     map <unique> <Leader>fmt <Plug>FocusModeToggle
 endif
