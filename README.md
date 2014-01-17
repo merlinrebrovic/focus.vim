@@ -38,8 +38,9 @@ Configuration
 =============
 
 By default the plugin maps the `<leader>fmt` combination for toggling the focus
-mode. You can set your own combination by adding a line in your `.vimrc`:
+mode. You can set your own combination by adding the following lines in your `.vimrc`:
 
+    let g:focus_use_default_mapping = 0
     nmap key_combination <Plug>FocusModeToggle
 
 Be sure to use `nmap` instead of `noremap` as we are counting on the result
