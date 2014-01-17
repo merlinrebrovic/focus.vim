@@ -138,13 +138,14 @@ if !exists('g:focus_use_default_mapping')
     let g:focus_use_default_mapping = 1
 endif
 
-" For backwards compatibility
-if hasmapto('<Plug>FocusModeToggle')
-    let g:focus_use_default_mapping = 0
-endif
-
 if g:focus_use_default_mapping == 1
-    map <unique> <Leader>fmt <Plug>FocusModeToggle
+    map <Leader>fmt <Plug>FocusModeToggle
+elseif g:focus_use_default_mapping == 0
+    if maparg("\<Leader>fmt") == '<Plug>FocusModeToggle'
+        unmap <Leader>fmt
+    endif
+else
+    echoerr 'g:focus_use_default_mapping set to invalid value'
 endif
 noremap <unique> <script> <Plug>FocusModeToggle <SID>ToggleFocusMode
 noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
