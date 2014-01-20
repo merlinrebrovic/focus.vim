@@ -71,7 +71,7 @@ function! s:CreateSideWindow(width)
     setfiletype focusmode
     exe "vert resize ".a:width
     " Jump back to the window on the right
-    exe "normal \<C-w>l"
+    exe "normal! \<C-w>l"
 endfunc
 
 " Center text on the screen
