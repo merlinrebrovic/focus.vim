@@ -153,7 +153,7 @@ else
     echoerr 'g:focus_use_default_mapping set to invalid value'
 endif
 noremap <unique> <script> <Plug>FocusModeToggle <SID>ToggleFocusMode
-noremap <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
+noremap <silent> <SID>ToggleFocusMode :call <SID>ToggleFocusMode()<CR>
 
 " Resetting the 'compatible' guard
 let &cpo = s:save_cpo
