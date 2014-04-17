@@ -122,7 +122,7 @@ function! s:ExitFocusMode()
     exec "silent! so ".s:temp_file
     exec delete(v:this_session)
     call setpos('.', l:cursor_position)
-    let s:focusbuffers = filter(range(0, bufnr('$')), 'buflisted(v:val) && getbufvar(bufname(v:val), "&filetype") != "focusmode" && bufwinnr(v:val)<0')
+    let s:focusbuffers = filter(range(1, bufnr('$')), 'buflisted(v:val) && getbufvar(bufname(v:val), "&filetype") != "focusmode" && bufwinnr(v:val)<0')
     if !empty(s:focusbuffers)
         exe 'bw '.join(s:focusbuffers, ' ')
     endif
