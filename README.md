@@ -19,14 +19,14 @@ outside dependencies.
 Installation
 ============
 
-1. [Vundle][]  
+1. [Vundle]
    Add the following line to your `.vimrc`:
 
         Bundle "merlinrebrovic/focus.vim"
 
    After this just source your `.vimrc` and run `:BundleInstall` inside Vim.
 
-2. [Pathogen][]  
+2. [Pathogen]
    Copy or clone this repository to `.vim/bundle` folder
    (`vimfiles\bundle` on Windows).
 
@@ -63,10 +63,18 @@ are several ways to do this in order of priority:
 License
 =======
 
-Copyright (c) Merlin Rebrović. Distributed under the [MIT license][].
+Copyright (c) Merlin Rebrović. Distributed under the [MIT license].
 
-Written by Merlin Rebrović and Zoran Meliš.
+Created by Merlin Rebrović and [Zoran Meliš][landofz]
+
+Contributors:
+
+* [ict]
+* [joshtch]
 
 [Vundle]: https://github.com/gmarik/vundle
 [Pathogen]: https://github.com/tpope/vim-pathogen
 [MIT license]: http://opensource.org/licenses/MIT
+[landofz]: https://github.com/landofz
+[ict]: https://github.com/ict
+[joshtch]: https://github.com/joshtch
