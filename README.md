@@ -10,6 +10,11 @@ buffer will be centered in your Vim window so you can have it in the center of
 your viewing area. When you exit focus mode all your previously opened buffers
 will be restored for you along with their corresponding windows.
 
+Screenshots
+============
+
+![Animated gif of the extension](http://merlin.rebrovic.net/media/external/focus.gif)
+
 Requirements
 ============
 
